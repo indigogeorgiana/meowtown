@@ -10,12 +10,12 @@ module.exports = function () {
     browser.url(Url.format(extend(config.proxy, { pathname: pathname })))
   })
 
-  this.When('I enter "$string" into the "$string" input', (input, name) => {
-    browser.setValue(`input[name=${name}]`, input)
+  this.When('I enter "$string" into the "$string" input', (value, name) => {
+    browser.setValue(`input[name=${name}]`, value)
   })
 
-  this.When('I click "$string"', text => {
-    browser.click(`=${text}`)
+  this.When('I click on the input with value "$string"', value => {
+     browser.click(`input[value="${value}"]`)
   })
 
   this.Then('I can see the list item "$string"', (text, callback) => {
@@ -23,7 +23,8 @@ module.exports = function () {
     assert.equal(listItemExists, true, callback)
   })
 
-  this.Then('I am redirected to "$string"', (pathname, callback) => {
+  this.Then('I am redirected to the "$string" page', (pathname, callback) => {
+    browser.waitForExist('body')
     const url = browser.getUrl()
     assert.equal(Url.parse(url).pathname, pathname, callback)
 
