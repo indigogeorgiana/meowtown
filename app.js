@@ -21,24 +21,26 @@ var catsObj = {
  ]
 }
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
  res.redirect('/cats') // what is this doing?
 })
 
-app.get('/cats', function(req, res) {
+app.get('/cats', function (req, res) {
  res.render('catsIndex', catsObj)
 })
 
-app.get('/cats/new', function(req, res) {
+app.get('/cats/new', function (req, res) {
  res.render('catsNew')
 })
 
-app.get('/cats/:id', function(req,res){
+app.get('/cats/:id', function (req, res){
   console.log(req.params); // try going to /cats/1
 })
 
-app.post('/cats', function(req,res) {
+app.post('/cats', function (req, res) {
   console.log(req.body);
+  catsObj.cats.push(req.body)
+  res.redirect('/')
 })
 
 module.exports = app;

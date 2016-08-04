@@ -7,7 +7,12 @@
   },
   "dependencies": {
     "body-parser": "~1.13.2",
+    "chimp": "^0.39.3",
     "express": "~4.13.1",
-    "hbs": "~3.1.0"
+    "hbs": "~3.1.0",
+    "xtend": "^4.0.1"
+  },
+  "devDependencies": {
+    "cucumber-assert": "^1.0.4"
   }
 }
