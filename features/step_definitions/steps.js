@@ -27,10 +27,5 @@ module.exports = function () {
     browser.waitForExist('body')
     const url = browser.getUrl()
     assert.equal(Url.parse(url).pathname, pathname, callback)
-
   })
-
-
-
-
 }
