@@ -39,8 +39,6 @@ app.get('/cats/:id', function (req, res){
 
 app.post('/cats', function (req, res) {
   console.log(req.body);
-  catsObj.cats.push(req.body)
-  res.redirect('/')
 })
 
 module.exports = app;

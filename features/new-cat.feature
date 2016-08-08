@@ -1,5 +1,6 @@
 Feature: New cat
 
+  @watch
   Scenario: I want to add a new cat
     Given I am viewing the page at "/cats/new"
     When I enter "Snowball" into the "name" input
