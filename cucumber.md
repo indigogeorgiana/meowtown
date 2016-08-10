@@ -41,7 +41,7 @@ Given I am viewing the page at "/"
   })
 
 ```
-The above step uses the `url` module and the `config.js` to show how you might set up steps with the test server details defined in one place. A more readable way of writing the same thing might be the following:     
+The above step uses the `url` module and the `config.js` to demonstarte how you might set up steps with the test server details defined in one place. A perhaps more readable way of writing the same thing might be the following:     
 
 ```js
   this.Given('I am viewing the page at "$string"', pathname => {
@@ -50,7 +50,7 @@ The above step uses the `url` module and the `config.js` to show how you might s
 
 ```
 
-Cucumber passes the `$string` to the step callback as the first argument, `pathname`. The callback then directs the browser to navigate to `http://localost:5050` + `/`, ie `http://localost:5050/`.
+Cucumber passes the `$string` to the step callback as the first argument, `pathname`. The callback then directs the browser to navigate to `http://localost:5050` + `/`, ie `http://localost:5050/`. If no errors crop up the n this step will pass.
 
 The `list-cats` feature also contains two `Then` steps in the format:
 ```yml
@@ -58,7 +58,9 @@ Then I can see the list item "fluffy"
 And I can see the list item "tick"
 ```
 
-and a matching step:
+(Cucumber is smart enough to know that `And` steps that follow `Then` steps are also really `Then` steps)
+
+and a matching Webdriver step:
 ```js  
 this.Then('I can see the list item "$string"', (text, callback) => {
   const listItemExists = browser.waitForExist(`li=${text}`)
@@ -99,6 +101,14 @@ So that I can find cats to adopt
 
 1. Spec out the feature using Gherkin Syntax in `features/search-cat.feature`.
 
-2. Add matching addtional steps to `features/step_definitions/steps.js`. You will need to refer to the [Chimp cheatsheet](https://chimp.readme.io/docs/cheat-sheet), [Webdriver selectors](http://webdriver.io/guide/usage/selectors.html) and [Webdriver API](http://webdriver.io/api.html)
+It may be helpful to think about:
 
-3. 
+  * the initial state of the application, what page is the user on?
+  * how does the user interact with the page? (enter a search into a form?)
+  * what do we expect to see if the search succeeds?
+  * What do we expect if the search does not succeed?
+
+2. Add the necessary matching addtional steps to `features/step_definitions/steps.js`. You may need to refer to the [Chimp cheatsheet](https://chimp.readme.io/docs/cheat-sheet), [Webdriver selectors](http://webdriver.io/guide/usage/selectors.html) and [Webdriver API](http://webdriver.io/api.html)
+
+3. Implement your feature and get your test to pass. 
+
