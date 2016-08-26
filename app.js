@@ -25,12 +25,12 @@ app.get('/', function (req, res) {
  res.redirect('/cats') // what is this doing?
 })
 
-app.get('/cats', function (req, res) {
- res.render('catsIndex', catsObj)
+app.get('/cats', function(req, res) {
+ res.render('cats-index', catsObj)
 })
 
-app.get('/cats/new', function (req, res) {
- res.render('catsNew')
+app.get('/cats/new', function(req, res) {
+ res.render('cats-new')
 })
 
 app.get('/cats/:id', function (req, res){
