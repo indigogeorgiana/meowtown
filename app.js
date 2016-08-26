@@ -26,11 +26,11 @@ app.get('/', function(req, res) {
 })
 
 app.get('/cats', function(req, res) {
- res.render('catsIndex', catsObj)
+ res.render('cats-index', catsObj)
 })
 
 app.get('/cats/new', function(req, res) {
- res.render('catsNew')
+ res.render('cats-new')
 })
 
 app.get('/cats/:id', function(req,res){

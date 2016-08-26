@@ -7,8 +7,6 @@ Unfortunately Eugene's version of meowtown is written in Ruby on Rails. We're go
 
 ## Release 1
 
-Install `nodemon`. This will watch for changes to our files and restart the server. ```npm i -g nodemon```
-
 Clone the repo, run ```npm i``` and then run ```npm start```. Visit [http://localhost:3000](http://localhost:3000).
 
 Notice that when you run npm start it doesn't exit. The server has to stay running to listen for requests from your browser.
@@ -29,7 +27,7 @@ Fill out the `catsShow.hbs` template so that you can see the name of the cat. Hi
 
 ## Release 3
 
-Study meowtown and add more properties to the `cats` variable. Now update the `catsIndex` and `catsShow` templates.
+Study meowtown and add more properties to the `cats` variable. Now update the `cats-index` and `cats-show` templates.
 
 
 ## Release 4
