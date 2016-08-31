@@ -38,7 +38,10 @@ app.get('/cats/:id', function (req, res){
 })
 
 app.post('/cats', function (req, res) {
-  console.log(req.body);
+  //var cat = req.body
+  //catsObj.cats.push(cat)
+
+  res.render('cats-index', catsObj)
 })
 
 module.exports = app;
