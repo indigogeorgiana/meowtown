@@ -1,15 +1,14 @@
-var express = require('express');
-var path = require('path');
-var bodyParser = require('body-parser');
+var express = require('express')
+var exphbs = require('express-handlebars');
+var path = require('path') 
 
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+// serve the files in /static
 app.use(express.static(path.join(__dirname, 'public')));
 
 //---------------------Ignore above here-------------------//

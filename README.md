@@ -1,73 +1,114 @@
-# Meowtown
+# Cucumber tests
 
-We're going to play with a fun project called [meowtown](http://meowtown.herokuapp.com/cats) that was written by [Eugene](https://github.com/data-doge), a former EDA grad and teacher.
+This branch implements cucumber tests
 
-Unfortunately Eugene's version of meowtown is written in Ruby on Rails. We're going to rewrite it using Node.js.
+## Concepts & Tools
 
+### Concepts:
+ * [Integration Tests]
+ * [Browser Automation]
+ * [User Stories]()
+ * [Job Stories]()
+
+### Tools:
+ * [Cucumber JS]
+ * [Gherkin]
+ * [Selenium]
+ * [Chimp]
+
+
+## Introduction
+
+In the meowtown-cucumber root directory run `npm install`. This will install the test helper tool [chimp](https://chimp.readme.io/)
+
+Take a look in the `/features` folder. You'll see two `.feature` files, a `step_definitions` folder with a `steps.js` file, and a `support folder with a `hooks.js` file.
+
+Features are the human-readable files for specifying how the app responds to user interactions. `step_definitions/steps.js` translate our feature specs into browser actions. `support/hooks.js` contains the code for starting and stopping the server before and after the tests.   
+
+`Given` steps put the app into a particular starting state. `When` steps simulate user interaction. `Then` steps run assertions to check if the app has responded as specified.  
+
+For example, the `list-cats` feature contains an initial `Given` step:
+
+```yml
+Given I am viewing the page at "/"
+```
+
+`step_defininitions/steps.js` contains a matching step:
+
+```js
+  this.Given('I am viewing the page at "$string"', pathname => {
+    browser.url(Url.format(extend(config.proxy, { pathname: pathname })))
+  })
+
+```
+The above step uses the `url` module and the `config.js` to demonstrate how you might set up steps with the test server details defined in one place. A perhaps more readable way of writing the same thing might be the following:     
+
+```js
+  this.Given('I am viewing the page at "$string"', pathname => {
+    browser.url(`http://localhost:5050${pathname}`)
+  })
+
+```
+
+Cucumber passes the `$string` to the step callback as the first argument, `pathname`. The callback then directs the browser to navigate to `http://localost:5050` + `/`, ie `http://localost:5050/`. If no errors crop up the n this step will pass.
+
+The `list-cats` feature also contains two `Then` steps in the format:
+```yml
+Then I can see the list item "fluffy"
+And I can see the list item "tick"
+```
+
+(Cucumber is smart enough to know that `And` steps that follow `Then` steps are also really `Then` steps)
+
+and a matching Webdriver step:
+```js  
+this.Then('I can see the list item "$string"', (text, callback) => {
+  const listItemExists = browser.waitForExist(`li=${text}`)
+  assert.equal(listItemExists, true, callback)
+})
+```
+
+Webdriver [selectors](http://webdriver.io/guide/usage/selectors.html) allow us to select elements based on the text they contain. The `Then` step asserts that a `<li>` element  containing the cat's name exists on the page. If it does it passes and the step is colored green, if it doesn't cucumber informs that this feature is not yet complete.
+
+Run `npm run test:watch`. The first time this runs it will trigger chimp to download and install the selenium browser driver. You should also see something like the following:
+
+![list cats feature test](/images/list-cats-run.png)
+
+`chimp` starts our meowtown server, finds the features tagged with `@dev` `@watch`, matches the gherkin steps with browser driver steps in `step_definitions/steps.js`, opens a browser and executes the active feature scenarios. If a particular step passes it colors the step description green in the terminal.
+  
+Now open the `features/new-cat.feature` file and add `@watch` on line 2 above `Scenario: Add a new cat`. Save the file and chimp will rerun the watched integration tests including the `new-cat.feature`.
+
+The above test will fail on the two final steps. Now open the `./app.js` file add a new line somewhere in the file and save it. Chimp re-runs the watched integration tests as we work on getting the test to pass. 
+
+Chimp is the glue between a selenium browser, [WebDriver](http://webdriver.io/) and the feature specs.  
 
 ## Release 1
 
-Clone the repo, run ```npm i``` and then run ```npm start```. Visit [http://localhost:3000](http://localhost:3000).
+Get the new-cat.feature to pass. 
 
-Notice that when you run npm start it doesn't exit. The server has to stay running to listen for requests from your browser.
+## Release 2 
 
-Visit [http://localhost:3000/](http://localhost:3000/)
+Create a new file `features/search-cast.feature`. Read through the gherkin documention [Feature Introduction](https://github.com/cucumber/cucumber/wiki/Feature-Introduction) and [Given-When-Then](https://github.com/cucumber/cucumber/wiki/Given-When-Then). 
 
-What happens? Can you go to `app.js` and work out what you are seeing and why you are seeing it? Talk it through with your pair and compare ideas.
+Your goal is to write a feature that lets the user search for particular cats based on their life story description:  
 
+In a User Story format we might capture the feature's intention as follows:
 
-## Release 2
+`As a user
+I want to find cats whose lifestory contains a keyword I enter
+So that I can find cats to adopt
+`
 
-Visit [http://localhost:3000/cats/1](http://localhost:3000/cats/1) and check the console.
+1. Spec out the feature using Gherkin Syntax in `features/search-cat.feature`.
 
-You should see the id printed in the console. Yay! Now we can find the cat the user is looking for and render just that cat out to the user. Get the correct cat from the cats variable and pass it as the second argument to the render function.
+It may be helpful to think about:
 
-Fill out the `catsShow.hbs` template so that you can see the name of the cat. Hint: if you are stuck with passing the individual cat to the `catShow` view, notice how `/cats` passes the cats object to the view.
+  * the initial state of the application, what page is the user on?
+  * how does the user interact with the page? (enter a search into a form?)
+  * what do we expect to see if the search succeeds?
+  * What do we expect if the search does not succeed?
 
+2. Add the necessary matching addtional steps to `features/step_definitions/steps.js`. You may need to refer to the [Chimp cheatsheet](https://chimp.readme.io/docs/cheat-sheet), [Webdriver selectors](http://webdriver.io/guide/usage/selectors.html) and [Webdriver API](http://webdriver.io/api.html)
 
-## Release 3
+3. Implement your feature and get your test to pass. 
 
-Study meowtown and add more properties to the `cats` variable. Now update the `cats-index` and `cats-show` templates.
-
-
-## Release 4
-
-Add a new route that listens for requests to `/cats/new`. Render the `catsNew` form. Check it out!
-
-
-## Release 5
-
-What happens when you submit your form? You should see some messages logged to the console. Take that data, make a new cat object and add it to your cats variable.
-
-
-## Release 6
-
-Copy the contents of the new cat form and add some handlebars expressions `{{}}` so we can fill in the form with the cats existing data.
-
-Add a new route that listens for requests to `cats/edit/:id`. Return the cat by `id` and pass it to the render function.
-
-
-## Release 7
-
-Add a route that listens for POST requests to `/cat/id`. Use what you've learned to update the cat in the `cats` array.
-
-## More
-
-Work out how to store the `cats` variable in a JSON file. You might want to make some functions that can load and save cats.
-
-Add the help page.
-
-Implement the rule that removes lives from the cat when it's viewed. Delete a cat once it has zero lives.
-
-Sort cats by when they were last viewed by a user.
-
-Appropriate Eugene's CSS file and add it to your server.
-
-
-## Resources
-
-Number | Name
--------|------
-1 | [REST](http://guides.rubyonrails.org/routing.html)
-2 | [Express](http://expressjs.com/)
-3 | [Handlebars](http://handlebarsjs.com/)

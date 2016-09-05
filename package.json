@@ -5,13 +5,15 @@
   "scripts": {
     "test:watch": "chimp --watch",
     "test": "chimp",
-    "start": "node-dev server.js"
+    "start": "nodemon server.js"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
-    "chimp": "^0.39.3",
+    "chimp": "^0.39.4",
     "express": "~4.13.1",
+    "express-handlebars": "^3.0.0",
     "hbs": "~3.1.0",
+    "nodemon": "^1.10.2",
     "xtend": "^4.0.1"
   },
   "devDependencies": {

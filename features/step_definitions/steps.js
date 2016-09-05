@@ -7,7 +7,9 @@ const config = require('../../config')
 module.exports = function () {
 
   this.Given('I am viewing the page at "$string"', pathname => {
-    browser.url(Url.format(extend(config.proxy, { pathname: pathname })))
+    browser.url(`http://localhost:5050${pathname}`) // hardcoded localhost
+    // real world example below
+    // browser.url(Url.format(extend(config.proxy, { pathname: pathname })))
   })
 
   this.When('I enter "$string" into the "$string" input', (value, name) => {
@@ -15,7 +17,7 @@ module.exports = function () {
   })
 
   this.When('I click on the input with value "$string"', value => {
-     browser.click(`input[value="${value}"]`)
+    browser.click(`input[value="${value}"]`)
   })
 
   this.Then('I can see the list item "$string"', (text, callback) => {
