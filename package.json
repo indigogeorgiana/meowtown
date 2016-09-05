@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "test:watch": "chimp --watch",
-    "test": "chimp",
+    "test": "chimp --watch",
     "start": "nodemon server.js"
   },
   "dependencies": {
