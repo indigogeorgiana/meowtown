@@ -44,6 +44,11 @@ server.get('/cats/new', function (req, res) {
 
 server.get('/cats/:id', function (req, res) {
   console.log(req.params) // try going to /cats/1
+  var id = req.params.id
+  var catInfo = data.cats.find(function (element) {
+    return element.id === parseInt(id)
+  })
+  res.render('show', catInfo)
 })
 
 server.post('/cats', function (req, res) {
