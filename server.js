@@ -1,4 +1,5 @@
 var path = require('path')
+const fs = require('fs')
 
 var express = require('express')
 var hbs = require('express-handlebars')
@@ -43,8 +44,23 @@ server.get('/cats/new', function (req, res) {
 })
 
 server.get('/cats/:id', function (req, res) {
-  console.log(req.params) // try going to /cats/1
+  const id = Number(req.params.id)
+  getData((err, data) => {
+    if (err) {
+      res.send('unable to read data file').status(500)
+    } else {
+      const kittiesData = JSON.parse(data)
+      const kitty = kittiesData.cats.find(cat => cat.id === id)
+      console.log(kitty)
+      res.render('show', kitty)
+    }
+  })
 })
+
+function getData (callback) {
+  const filePath = path.join(__dirname, 'cats.json')
+  fs.readFile(filePath, 'utf8', callback)
+}
 
 server.post('/cats', function (req, res) {
   console.log(req.body)
